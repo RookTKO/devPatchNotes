@@ -13,7 +13,7 @@ rectangle Application {
     package "Client Side" {
     usecase MainMenu as "Main Menu
     --
-    Users are presented with game modes to choose from."
+    Client Side User is presented with game modes to choose from."
     usecase LobbyCS as "Lobby
     --
     Users are presented with a QR code
@@ -63,6 +63,7 @@ LobbyCS . LobbyM
 MobileUser1 -> UserInput
 MobileUser2 -> UserInput
 MobileUser3 -> UserInput
+ClientSideUser -> UserInput
 UserInput --> LobbyM
 LobbyM --> SelectAnswers
 SelectAnswers --> Question
