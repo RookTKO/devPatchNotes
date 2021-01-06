@@ -1,0 +1,71 @@
+@startuml
+skinparam actorStyle awesome
+package Users {
+    actor "Client Side User" as ClientSideUser
+    actor "Mobile User 1" as MobileUser1
+    actor "Mobile User 2" as MobileUser2
+    actor "Mobile User 3" as MobileUser3
+}
+
+
+
+rectangle Application {
+    package "Client Side" {
+    usecase MainMenu as "Main Menu
+    --
+    Users are presented with game modes to choose from."
+    usecase LobbyCS as "Lobby
+    --
+    Users are presented with a QR code
+    or character code (ex: 3ER7U) to input
+    into their mobile phones to access the lobby."
+    usecase Question as "Question
+    --
+    Users are presented with a question."
+    usecase Answer as "Answer
+    --
+    Once all answers are submitted users
+    will be displayed all submitted answers
+    and the correct one with an explanation."
+    usecase End as "Game Ends
+    --
+    Game ends once question bank has
+    been gone through."
+    }
+
+    package "Mobile" {
+    usecase UserInput as "User Input
+    --
+    User Input QR code or
+    character to code into client
+    to gain access to the lobby."
+    usecase LobbyM as "Lobby
+    --
+    Users wait for ClientSideUser to
+    start the game once they decide all
+    the players are in the lobby."
+    usecase SelectAnswers as "Answer Selection
+    --
+    Users are presented with answers to
+    select or fill in based on the question."
+    }
+}
+ClientSideUser -->  MainMenu
+MainMenu --> LobbyCS
+LobbyCS --> Question
+Question --> Answer
+Question --> SelectAnswers
+Answer --> Question
+Answer --> End
+
+LobbyCS . LobbyM
+
+MobileUser1 -> UserInput
+MobileUser2 -> UserInput
+MobileUser3 -> UserInput
+UserInput --> LobbyM
+LobbyM --> SelectAnswers
+SelectAnswers --> Question
+
+
+@enduml
