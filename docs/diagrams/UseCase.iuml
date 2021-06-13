@@ -18,7 +18,9 @@ rectangle Application {
     --
     Users are presented with a QR code
     or character code (ex: 3ER7U) to input
-    into their mobile phones to access the lobby."
+    into their mobile phones to access the lobby.
+
+    Server asks users to Input Name"
     usecase Question as "Question
     --
     Users are presented with a question."
@@ -32,6 +34,24 @@ rectangle Application {
     Game ends once question bank has
     been gone through."
     }
+
+    package "Server" {
+    usecase Server as "Server
+    --
+    Is the middlleman with very little responsibility,
+    except for maybe validating inputs and
+    preventing malicious behavior"
+    usecase ServerL as "Server Lobby
+    --
+    Validates userinput from Mobile Client
+    such as Name from users."
+    usecase ServerQ as "Server Question
+    --
+    Validates user input from Mobile Client
+    such as Answers from users"
+
+    }
+
 
     package "Mobile" {
     usecase UserInput as "User Input
@@ -54,11 +74,10 @@ ClientSideUser -->  MainMenu
 MainMenu --> LobbyCS
 LobbyCS --> Question
 Question --> Answer
-Question --> SelectAnswers
+Question  -> ServerQ
 Answer --> Question
 Answer --> End
 
-LobbyCS . LobbyM
 
 MobileUser1 -> UserInput
 MobileUser2 -> UserInput
@@ -66,7 +85,14 @@ MobileUser3 -> UserInput
 ClientSideUser -> UserInput
 UserInput --> LobbyM
 LobbyM --> SelectAnswers
-SelectAnswers --> Question
+SelectAnswers  -> ServerQ
 
+
+Server . ServerL
+ServerQ . Server
+
+
+LobbyCS --> ServerL
+LobbyM  --> ServerL
 
 @enduml
